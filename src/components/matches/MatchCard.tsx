@@ -4,6 +4,7 @@ import { formatMatchTime } from '@/utils/match';
 import { useFavorites } from '@/store/favorites';
 import DefaultTeamLogo from '@/components/icons/DefaultTeamLogo';
 import { useState } from 'react';
+import imageLoader from '@/utils/imageLoader';
 
 interface MatchCardProps {
   match: Match;
@@ -19,6 +20,7 @@ const TeamLogo = ({ logo, name }: { logo?: string; name: string }) => {
 
   return (
     <Image
+      loader={imageLoader}
       src={logo}
       alt={name}
       fill

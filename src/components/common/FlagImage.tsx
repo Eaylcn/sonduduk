@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useState } from 'react';
-import DefaultFlag from '@/components/icons/DefaultFlag';
+import imageLoader from '@/utils/imageLoader';
 
 interface FlagImageProps {
   src: string;
@@ -8,26 +8,21 @@ interface FlagImageProps {
   className?: string;
 }
 
-export default function FlagImage({ src, alt, className = '' }: FlagImageProps) {
+export default function FlagImage({ src, alt, className }: FlagImageProps) {
   const [error, setError] = useState(false);
 
   if (error) {
-    return (
-      <div className={`flex items-center justify-center text-gray-400 ${className}`}>
-        <DefaultFlag />
-      </div>
-    );
+    return <div className={`bg-gray-700 ${className}`} />;
   }
 
   return (
-    <div className={`relative ${className}`}>
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        className="object-cover"
-        onError={() => setError(true)}
-      />
-    </div>
+    <Image
+      loader={imageLoader}
+      src={src}
+      alt={alt}
+      fill
+      className={className}
+      onError={() => setError(true)}
+    />
   );
 } 

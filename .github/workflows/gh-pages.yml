@@ -1,8 +1,8 @@
 name: Deploy Next.js site to Pages
 
-on: 
+on:
   push:
-    branches: ["main"]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -10,63 +10,39 @@ permissions:
   pages: write
   id-token: write
 
-env:
-  NODE_ENV: production
-  NEXT_TELEMETRY_DISABLED: 1
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
         with:
-          node-version: "18"
-          cache: 'npm'
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      - name: Show environment info
-        run: |
-          pwd
-          ls -la
-          node -v
-          npm -v
-          cat package.json
+          node-version: 18
+          cache: npm
+      
       - name: Install dependencies
-        run: |
-          npm ci --verbose
-          npm ls
-      - name: Build with Next.js
-        run: |
-          echo "Starting build process..."
-          npm run build
-          echo "Build completed"
-          ls -la
-          if [ -d "out" ]; then
-            echo "Content of out directory:"
-            ls -la out/
-          else
-            echo "out directory not found"
-            echo "Current directory contents:"
-            ls -la
-          fi
+        run: npm ci
+      
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /sonduduk
+      
+      - name: Configure Pages
+        uses: actions/configure-pages@v4
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
 
   deploy:
+    needs: build
+    runs-on: ubuntu-22.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-22.04
-    needs: build
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

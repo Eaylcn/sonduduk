@@ -31,6 +31,13 @@ jobs:
           cache: 'npm'
       - name: Setup Pages
         uses: actions/configure-pages@v4
+      - name: Show environment info
+        run: |
+          pwd
+          ls -la
+          node -v
+          npm -v
+          cat package.json
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
@@ -41,9 +48,31 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
+          ls -la node_modules
+      - name: Check Next.js config
+        run: |
+          if [ -f "next.config.js" ]; then
+            echo "Content of next.config.js:"
+            cat next.config.js
+          else
+            echo "next.config.js not found"
+          fi
       - name: Build with Next.js
-        run: npm run build
+        run: |
+          echo "Starting build process..."
+          npm run build
+          echo "Build completed"
+          ls -la
+          if [ -d "out" ]; then
+            echo "Content of out directory:"
+            ls -la out/
+          else
+            echo "out directory not found"
+            echo "Current directory contents:"
+            ls -la
+          fi
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

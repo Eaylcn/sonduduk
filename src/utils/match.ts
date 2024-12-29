@@ -2,12 +2,14 @@ import { Match } from '@/types/match';
 
 export const getMatchStatusColor = (status: Match['status']) => {
   switch (status) {
-    case 'LIVE':
+    case 'live':
       return 'text-green-400';
-    case 'FINISHED':
+    case 'finished':
       return 'text-gray-400';
-    case 'SCHEDULED':
+    case 'scheduled':
       return 'text-yellow-400';
+    case 'half_time':
+      return 'text-green-400';
     default:
       return 'text-gray-400';
   }

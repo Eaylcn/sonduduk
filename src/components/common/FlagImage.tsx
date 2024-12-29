@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { useState } from 'react';
-import imageLoader from '@/utils/imageLoader';
 
 interface FlagImageProps {
   src: string;
@@ -15,10 +14,12 @@ export default function FlagImage({ src, alt, className }: FlagImageProps) {
     return <div className={`bg-gray-700 ${className}`} />;
   }
 
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+  const imagePath = src.startsWith('/') ? `${basePath}${src}` : src;
+
   return (
     <Image
-      loader={imageLoader}
-      src={src}
+      src={imagePath}
       alt={alt}
       fill
       className={className}

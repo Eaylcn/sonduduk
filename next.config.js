@@ -4,7 +4,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: '/sondudukv0.01',
+  basePath: '/sonduduk',
 }
 
 module.exports = nextConfig 

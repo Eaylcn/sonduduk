@@ -7,6 +7,11 @@ interface FlagImageProps {
   className?: string;
 }
 
+const getAssetPath = (path: string) => {
+  const basePath = process.env.NODE_ENV === 'production' ? '/sonduduk' : '';
+  return `${basePath}${path}`;
+};
+
 export default function FlagImage({ src, alt, className }: FlagImageProps) {
   const [error, setError] = useState(false);
 
@@ -14,12 +19,9 @@ export default function FlagImage({ src, alt, className }: FlagImageProps) {
     return <div className={`bg-gray-700 ${className}`} />;
   }
 
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-  const imagePath = src.startsWith('/') ? `${basePath}${src}` : src;
-
   return (
     <Image
-      src={imagePath}
+      src={getAssetPath(src)}
       alt={alt}
       fill
       className={className}

@@ -10,25 +10,21 @@ interface MatchCardProps {
   onClick: () => void;
 }
 
+const getAssetPath = (path: string) => {
+  const basePath = process.env.NODE_ENV === 'production' ? '/sonduduk' : '';
+  return `${basePath}${path}`;
+};
+
 const TeamLogo = ({ logo, name }: { logo?: string; name: string }) => {
   const [error, setError] = useState(false);
 
   if (!logo || error) {
-    return <Image
-      src="/teams/default-team.svg"
-      alt={name}
-      fill
-      sizes="24px"
-      className="object-contain"
-    />;
+    return <DefaultTeamLogo />;
   }
-
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-  const imagePath = logo.startsWith('/') ? `${basePath}${logo}` : logo;
 
   return (
     <Image
-      src={imagePath}
+      src={getAssetPath(logo)}
       alt={name}
       fill
       sizes="24px"

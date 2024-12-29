@@ -4,11 +4,26 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
-  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
+  basePath: process.env.NODE_ENV === 'production' ? '/sonduduk' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/sonduduk/' : '',
   trailingSlash: true,
   experimental: {
     appDir: true,
+  },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.(png|jpe?g|gif|svg)$/i,
+      use: [
+        {
+          loader: 'file-loader',
+          options: {
+            publicPath: '/_next',
+            name: 'static/media/[name].[hash].[ext]',
+          },
+        },
+      ],
+    });
+    return config;
   },
 }
 

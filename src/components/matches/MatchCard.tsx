@@ -14,7 +14,13 @@ const TeamLogo = ({ logo, name }: { logo?: string; name: string }) => {
   const [error, setError] = useState(false);
 
   if (!logo || error) {
-    return <DefaultTeamLogo />;
+    return <Image
+      src="/teams/default-team.svg"
+      alt={name}
+      fill
+      sizes="24px"
+      className="object-contain"
+    />;
   }
 
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';

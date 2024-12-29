@@ -3,11 +3,13 @@ const nextConfig = {
   output: 'export',
   images: {
     unoptimized: true,
-    domains: ['localhost', 'eaylcn.github.io'],
   },
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
   assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
   trailingSlash: true,
+  experimental: {
+    appDir: true,
+  },
 }
 
 module.exports = nextConfig 
